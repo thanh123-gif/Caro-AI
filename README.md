@@ -1,4 +1,4 @@
-Chươnng trình game caro sử dụng  Turtle trong python và engine AI dựa trên thuật toán minimax, cắt tỉa alpha-beta cùng với heuristic điểm số 4 hướng.
+Chương trình game caro sử dụng Turtle trong python và engine AI dựa trên thuật toán minimax, cắt tỉa alpha-beta cùng với heuristic điểm số 4 hướng.
 
 **Thuật toán**
 
@@ -11,7 +11,7 @@ Chươnng trình game caro sử dụng  Turtle trong python và engine AI dựa 
 	
 	. Các nhánh nối giữa các nút thể hiện nước đi, tức là cho biết từ một tình huống của trò chơi chuyển sang tình huống khác thông 	qua chỉ một nước đi nào đó.
 	
-	. Các lá hay còn gọi là nút lá, thể hiện thời điểm kết thúc khi mà kết quả của trờ chơi đã rõ.
+	. Các lá hay còn gọi là nút lá, thể hiện thời điểm kết thúc khi mà kết quả của trò chơi đã rõ.
 	
 	. Độ sâu của cây: Số tầng của cây
 	
@@ -42,7 +42,7 @@ Từ các giá trị này người chơi sẽ lựa chọn cho mình nước đi
 - Vì sự bùng nổ cây trò chơi trong minimax nên ta sẽ bỏ những nút không tối ưu bằng cách cắt tỉa alpha-beta.
 
 - Tư tưởng: + Nếu một nhánh tìm kiếm nào đó không thể cải thiện với giá trị mà chúng ta đã có, thì không cần xét đến hàm đó nữa -> tiết kiệm chi phí thời gian, bộ nhớ cho cây tìm kiếm
-		 + Dùng hai cận Anpha và Beta để so sánh và loại bỏ các trường hợp sẽ không cần xét đến trong thuật toán minimax.	
+		 + Dùng hai cận Alpha và Beta để so sánh và loại bỏ các trường hợp sẽ không cần xét đến trong thuật toán minimax.	
 
-- Mô tả: + Anpha lưu nướcc đi tốt nhất của máy, Beta lưu giá trị tốt nhất của Người chơi
-	 + Nếu bất cứ khi nào anpha >= beta, thì người chơi chắc chắn sẽ chọn nước đi tốt nhất cho họ và cưỡng bức nước đi tồi hơn anpha cho máy, vì vậy mà không cần xét thêm bước nào nữa.
+- Mô tả: + Alpha lưu nước đi tốt nhất của máy, Beta lưu giá trị tốt nhất của Người chơi
+	 + Nếu bất cứ khi nào alpha >= beta, thì người chơi chắc chắn sẽ chọn nước đi tốt nhất cho họ và cưỡng bức nước đi tồi hơn alpha cho máy, vì vậy mà không cần xét thêm bước nào nữa.
