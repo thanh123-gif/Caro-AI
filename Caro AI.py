@@ -1,4 +1,4 @@
-import turtle
+import turtle 
 import random
 import time
 
@@ -22,7 +22,7 @@ def is_win(board):
     white = score_of_col(board,'w')
     
     sum_sumcol_values(black)
-    sum_sumcol_values(white)
+    sum_sumcol_values(white) 
     
     if 5 in black and black[5] == 1:
         return 'Black won'
@@ -39,7 +39,7 @@ def is_win(board):
 def march(board,y,x,dy,dx,length): 
     yf = y + length*dy 
     xf = x + length*dx
-    # chừng nào yf,xf không có trong board
+    # chừng nào yf,xf không có trong board 
     while not is_in(board,yf,xf):
         yf -= dy
         xf -= dx
@@ -96,7 +96,7 @@ def score_of_row(board,cordi,dy,dx,cordf,col):
 
 def score_of_col(board,col): 
     f = len(board)
-    #scores của 4 hướng đi
+    #scores của 4 hướng đi 
     scores = {(0,1):[],(-1,1):[],(1,0):[],(1,1):[]}
     for start in range(len(board)):
         scores[(0,1)].extend(score_of_row(board,(start, 0), 0, 1,(start,f-1), col))
@@ -106,7 +106,7 @@ def score_of_col(board,col):
         
         if start + 1 < len(board):
             scores[(1,1)].extend(score_of_row(board,(0, start+1), 1, 1,(f-2-start,f-1), col)) 
-            scores[(-1,1)].extend(score_of_row(board,(f -1 , start + 1), -1,1,(start+1,f-1), col))
+            scores[(-1,1)].extend(score_of_row(board,(f -1 , start + 1), -1,1,(start+1,f-1), col)) 
             
     return score_ready(scores)
     
@@ -124,7 +124,7 @@ def score_of_col_one(board,col,y,x):
     return score_ready(scores)
     
 def possible_moves(board):  
-    #mảng taken lưu giá trị của người chơi và của máy trên bàn cờ
+    #mảng taken lưu giá trị của người chơi và của máy trên bàn cờ 
     taken = []
     # mảng directions lưu hướng đi (8 hướng)
     directions = [(0,1),(0,-1),(1,0),(-1,0),(1,1),(-1,-1),(-1,1),(1,-1)]
@@ -150,7 +150,7 @@ def TF34score(score3,score4):
     for key4 in score4:
         if score4[key4] >=1:
             for key3 in score3:
-                if key3 != key4 and score3[key3] >=2:
+                if key3 != key4 and score3[key3] >=2: 
                         return True
     return False
     
@@ -167,7 +167,7 @@ def stupid_score(board,col,anticol,y,x):
     adv += a * M
     sum_sumcol_values(sumcol)
     #{0: 0, 1: 15, 2: 0, 3: 0, 4: 0, 5: 0, -1: 0}
-    adv +=  sumcol[-1] + sumcol[1] + 4*sumcol[2] + 8*sumcol[3] + 16*sumcol[4]
+    adv +=  sumcol[-1] + sumcol[1] + 4*sumcol[2] + 8*sumcol[3] + 16*sumcol[4] 
     
     #phòng thủ
     board[y][x]=anticol
@@ -185,7 +185,7 @@ def stupid_score(board,col,anticol,y,x):
 def winning_situation(sumcol):
     if 1 in sumcol[5].values():
         return 5
-    elif len(sumcol[4])>=2 or (len(sumcol[4])>=1 and max(sumcol[4].values())>=2):
+    elif len(sumcol[4])>=2 or (len(sumcol[4])>=1 and max(sumcol[4].values())>=2): 
         return 4
     elif TF34score(sumcol[3],sumcol[4]):
         return 4
@@ -224,52 +224,58 @@ def best_move(board,col):
 
 ##Graphics Engine
 
-def click(x,y):
-    global board,colors,win, move_history
-    
-    x,y = getindexposition(x,y)
-    
+def click(x, y):
+    global board, colors, win, move_history
+
+    # Nếu click gần nút replay
+    if 14.5 <= x <= 17.5 and -1 <= y <= 1:
+        restart_game()
+        return
+
+    x, y = getindexposition(x, y)
+
     if x == -1 and y == -1 and len(move_history) != 0:
         x, y = move_history[-1]
-     
-        del(move_history[-1])
+        del move_history[-1]
         board[y][x] = " "
         x, y = move_history[-1]
-       
-        del(move_history[-1])
+        del move_history[-1]
         board[y][x] = " "
         return
-    
+
     if not is_in(board, y, x):
         return
-    
+
     if board[y][x] == ' ':
-        
-        draw_stone(x,y,colors['b'])
-        board[y][x]='b'
-        
+        draw_stone(x, y, colors['b'])
+        board[y][x] = 'b'
         move_history.append((x, y))
-        
+
         game_res = is_win(board)
         if game_res in ["White won", "Black won", "Draw"]:
-            print (game_res)
+            announce_winner(game_res)
+            draw_replay_button()
             win = True
             return
-            
-          
-            
-        ay,ax = best_move(board,'w')
-        draw_stone(ax,ay,colors['w'])
-        board[ay][ax]='w'    
-            
+
+        ay, ax = best_move(board, 'w')
+        draw_stone(ax, ay, colors['w'])
+        board[ay][ax] = 'w'
         move_history.append((ax, ay))
-        
+
         game_res = is_win(board)
         if game_res in ["White won", "Black won", "Draw"]:
-            print (game_res)
+            announce_winner(game_res)
+            draw_replay_button()
             win = True
             return
-            
+
+def on_click_replay_region(x, y):
+    if 14.5 <= x <= 20.5 and -1 <= y <= 1:
+        restart_game()
+    else:
+        click(x, y)  # nếu không bấm vào nút, xử lý như bình thường
+
           
 def initialize(size):
     
@@ -280,7 +286,7 @@ def initialize(size):
     board = make_empty_board(size)
     
     screen = turtle.Screen()
-    screen.onclick(click)
+    screen.onclick(on_click_replay_region)
     screen.setup(screen.screensize()[1]*2,screen.screensize()[1]*2)
     screen.setworldcoordinates(-1,size,size,-1)
     screen.bgcolor('light blue')  
@@ -319,10 +325,17 @@ def initialize(size):
         
     border.ht()
     
+    global announcer
+    announcer = turtle.Turtle()
+    announcer.hideturtle()
+    announcer.penup()
+    announcer.goto(7, 15.2) 
 
-    
+    draw_replay_button()
+
     screen.listen()
     screen.mainloop()
+   
     
 def getindexposition(x,y):
     intx,inty = int(x),int(y)
@@ -348,6 +361,56 @@ def draw_stone(x,y,colturtle):
     colturtle.circle(0.3)
     colturtle.end_fill()
     colturtle.penup()
+
+def announce_winner(result):
+    global announcer
+    announcer = turtle.Turtle()
+    announcer.hideturtle()
+    announcer.penup()
+    announcer.color("red")
+    announcer.goto(7, -1)  
+    announcer.write(result, align="center", font=("Arial", 20, "bold"))
+
+def draw_replay_button():
+    global replay_btn
+    replay_btn = turtle.Turtle()
+    replay_btn.hideturtle()
+    replay_btn.penup()
+    replay_btn.goto(14.5, -1)  
+    replay_btn.color("black", "lightgreen")
+    replay_btn.begin_fill()
+    for _ in range(2):
+        replay_btn.forward(3)  
+        replay_btn.left(90)
+        replay_btn.forward(1)  
+        replay_btn.left(90)
+    replay_btn.end_fill()
+
+    # Vẽ chữ chính giữa nút
+    replay_btn.goto(16, -0.2)  # chính giữa nút
+    replay_btn.color("black")
+    replay_btn.write("🔁 Replay", align="center", font=("Arial", 14, "bold"))
+
+    # Gán onclick cho toàn vùng nút
+    screen.onclick(on_click_replay_region)
+
+
+
+def restart_game(x=None, y=None):
+    global move_history, win, announcer
+    win = False
+    move_history.clear()
     
+    for y in range(len(board)):
+        for x in range(len(board[y])):
+            board[y][x] = " "
+    
+    for t in colors.values():
+        t.clear()
+    
+    if 'announcer' in globals():
+        announcer.clear()
+
+
 if __name__ == '__main__':
     initialize(15)
